@@ -1,9 +1,10 @@
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace SteamTime.Data
+namespace SteamTime.Services
 {
     public class ApiGameService
     {
@@ -16,7 +17,7 @@ namespace SteamTime.Data
             SteamId = data["id"].ToString();
             FetchUrl = $"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={data["key"].ToString()}&steamid={data["id"].ToString()}include_played_free_games=true&include_appinfo=true&format=json";
         }
-        public async Task<JObject> FetchDataAsync()
+        public async Task<JToken> FetchDataAsync()
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage res = await client.GetAsync(FetchUrl);
@@ -25,7 +26,7 @@ namespace SteamTime.Data
             if (data != null)
             {
                 var dataObj = JObject.Parse(data);
-                return dataObj;
+                return dataObj["response"];
             }
             else
             {

@@ -1,0 +1,54 @@
+@model IEnumerable<SteamTime.Models.SteamGame>
+@{
+    ViewData["Title"] = "SteamGame";
+    ViewData["ImgFormat"] = ".jpg";
+    ViewData["TotalTime"] = Model.Sum(mod => mod.PlayTime);
+    
+}
+
+<h2>@ViewData["Title"] / Total Hours Played = @ViewData["TotalTime"]</h2>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr class="info">
+            <th>
+                @Html.DisplayNameFor(model => model.AppId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayTime)                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayTimeTwoWeeks)           
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HashImgLogo)           
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlayTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlayTimeTwoWeeks)
+                </td>
+                <td>
+                    <img src="http://media.steampowered.com/steamcommunity/public/images/apps/@Html.DisplayFor(modelItem => item.AppId)/@Html.DisplayFor(modelItem => item.HashImgLogo)@ViewData["ImgFormat"]" alt="@Html.DisplayFor(modelItem => item.Name)">
+                </td>
+            </tr>            
+        }
+    </tbody>
+</table>

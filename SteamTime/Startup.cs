@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SteamTime.Models;
-using SteamTime.Data;
+using SteamTime.Services;
 
 namespace SteamTime
 {
@@ -40,10 +40,11 @@ namespace SteamTime
                 options.UseMySql(Configuration.GetConnectionString("SteamTimeContext"), builder => builder.MigrationsAssembly("SteamTime"))
             );
             services.AddScoped<SteamApiService>();
+            services.AddScoped<SteamGameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SteamApiService api)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

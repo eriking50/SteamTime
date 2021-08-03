@@ -17,6 +17,9 @@ namespace SteamTime.Models
         public int PlayTimeTwoWeeks { get; set; }
         public string HashImgLogo { get; set; }
 
+        public SteamGame()
+        {
+        }
         public SteamGame(string steamId, int appId, string name, int playTime, int playTimeTwoWeeks, string hashImgLogo)
         {
             SteamId = steamId;
