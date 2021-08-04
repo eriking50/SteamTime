@@ -47,7 +47,14 @@ namespace SteamTime.Services
                     {
                         playtime_2weeks = (int)g["playtime_2weeks"];
                     }
-                    img_logo_url = (string)g["img_logo_url"];
+                    if (g["img_logo_url"].ToString() == "")
+                    {
+                        img_logo_url = "NotFound";
+                    }
+                    else
+                    {
+                        img_logo_url = (string)g["img_logo_url"];
+                    }
                     SteamGame game = new SteamGame(apiGameService.SteamId, appId, name, playtime_forever, playtime_2weeks, img_logo_url);
                     _context.Add(game);
                 }
@@ -55,7 +62,7 @@ namespace SteamTime.Services
 
             return true;
             }
-            return false;
+        return false;
         }
     }
 }

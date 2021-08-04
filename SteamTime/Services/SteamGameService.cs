@@ -8,7 +8,7 @@ namespace SteamTime.Services
 {
     public class SteamGameService
     {
-        private SteamTimeContext _context;
+        public SteamTimeContext _context {get; private set;}
         
         public SteamGameService(SteamTimeContext context)
         {
@@ -19,8 +19,5 @@ namespace SteamTime.Services
         {
             return await _context.SteamGame.ToListAsync();
         }
-        // var seller = await _context.Seller.FindAsync(id);
-        //         _context.Seller.Remove(seller);
-        //         await _context.SaveChangesAsync();
     }
 }

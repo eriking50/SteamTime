@@ -52,7 +52,7 @@ namespace SteamTime
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                // app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -64,7 +64,7 @@ namespace SteamTime
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=SteamGame}/{action=Index}/{id?}");
             });
         }
     }

@@ -2,11 +2,10 @@
 @{
     ViewData["Title"] = "SteamGame";
     ViewData["ImgFormat"] = ".jpg";
-    ViewData["TotalTime"] = Model.Sum(mod => mod.PlayTime);
     
 }
 
-<h2>@ViewData["Title"] / Total Hours Played = @ViewData["TotalTime"]</h2>
+<h2>@ViewData["Title"] / Total Minutes Played = @ViewData["TotalPlayedTime"]</h2>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -46,7 +45,14 @@
                     @Html.DisplayFor(modelItem => item.PlayTimeTwoWeeks)
                 </td>
                 <td>
-                    <img src="http://media.steampowered.com/steamcommunity/public/images/apps/@Html.DisplayFor(modelItem => item.AppId)/@Html.DisplayFor(modelItem => item.HashImgLogo)@ViewData["ImgFormat"]" alt="@Html.DisplayFor(modelItem => item.Name)">
+                    @if (item.HashImgLogo == "NotFound")
+                    {
+                        <img src="https://i.ibb.co/L9c9Vyn/notfound.png"  alt="@Html.DisplayFor(modelItem => item.Name)">
+                    }
+                    else
+                    {
+                        <img src="http://media.steampowered.com/steamcommunity/public/images/apps/@Html.DisplayFor(modelItem => item.AppId)/@Html.DisplayFor(modelItem => item.HashImgLogo)@ViewData["ImgFormat"]" alt="@Html.DisplayFor(modelItem => item.Name)">
+                    }
                 </td>
             </tr>            
         }
