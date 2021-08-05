@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - SteamTime</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-steam.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
@@ -26,11 +26,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SteamTime</a>
+                <a asp-area="" asp-controller="SteamGame" asp-action="Index" class="navbar-brand">SteamTime</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="SteamGame" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="SteamGame" asp-action="Update">Update List</a></li>
                 </ul>
             </div>

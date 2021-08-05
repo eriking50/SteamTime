@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SteamTime.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SteamTime.Services
 {
@@ -63,6 +64,34 @@ namespace SteamTime.Services
             return true;
             }
         return false;
+        }
+        public async Task<bool> UpdateGamesAsync()
+        {
+            int playtime_2weeks;
+            string img_logo_url;
+            JToken data = await apiGameService.FetchDataAsync();
+            foreach (var game in data["games"])
+            {
+                if (game["playtime_2weeks"] == null)
+                        {
+                            playtime_2weeks = 0;
+                        }
+                        else
+                        {
+                            playtime_2weeks = (int)game["playtime_2weeks"];
+                        }
+                        if (game["img_logo_url"].ToString() == "")
+                        {
+                            img_logo_url = "NotFound";
+                        }
+                        else
+                        {
+                            img_logo_url = (string)game["img_logo_url"];
+                        }
+                SteamGame gameObj = new SteamGame(apiGameService.SteamId, (int)game["appid"], game["name"].ToString(), (int)game["playtime_forever"], playtime_2weeks, img_logo_url);
+                _context.Update(gameObj);
+            }
+            return false;
         }
     }
 }

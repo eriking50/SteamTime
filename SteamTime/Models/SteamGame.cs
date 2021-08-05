@@ -10,10 +10,14 @@ namespace SteamTime.Models
     public class SteamGame
     {
         [Key]
+        [Display(Name = "Game Id")]
         public int AppId { get; set; }
         public string SteamId { get; set; }
+        [Display(Name = "Game Name")]
         public string Name { get; set; }
+        [Display(Name = "Total Played Time")]
         public int PlayTime { get; set; }
+        [Display(Name = "Total Played Time in Last Two Weeks")]
         public int PlayTimeTwoWeeks { get; set; }
         public string HashImgLogo { get; set; }
 

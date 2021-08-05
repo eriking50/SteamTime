@@ -23,9 +23,14 @@ namespace SteamTime.Controllers
             var list = await _steamGameService.FindAllAsync();
             var sum = _steamGameService._context.SteamGame.Sum(game => game.PlayTime);
             ViewData["TotalPlayedTime"] = sum;
-            return View(list);
+            return View(list.OrderBy(game => game.Name));
         }
         public async Task<IActionResult> Update()
+        {
+            await _steamApiService.UpdateGamesAsync();
+            return View();
+        }
+        public async Task<IActionResult> Create()
         {
             await _steamApiService.FetchGamesAsync();
             return View();
