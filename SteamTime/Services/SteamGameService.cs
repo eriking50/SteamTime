@@ -19,5 +19,9 @@ namespace SteamTime.Services
         {
             return await _context.SteamGame.ToListAsync();
         }
+        public async Task<bool> AnyDataAsync()
+        {
+            return await _context.SteamGame.AnyAsync();
+        }
     }
 }

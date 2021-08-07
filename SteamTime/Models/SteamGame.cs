@@ -17,20 +17,20 @@ namespace SteamTime.Models
         public string Name { get; set; }
         [Display(Name = "Total Played Time")]
         public int PlayTime { get; set; }
-        [Display(Name = "Total Played Time in Last Two Weeks")]
-        public int PlayTimeTwoWeeks { get; set; }
+        [Display(Name = "Played In Last Two Weeks?")]
+        public bool PlayedInLastTwoWeeks { get; set; }
         public string HashImgLogo { get; set; }
 
         public SteamGame()
         {
         }
-        public SteamGame(string steamId, int appId, string name, int playTime, int playTimeTwoWeeks, string hashImgLogo)
+        public SteamGame(string steamId, int appId, string name, int playTime, bool playedInLastTwoWeeks, string hashImgLogo)
         {
             SteamId = steamId;
             AppId = appId;
             Name = name;
             PlayTime = playTime;
-            PlayTimeTwoWeeks = playTimeTwoWeeks;
+            PlayedInLastTwoWeeks = playedInLastTwoWeeks;
             HashImgLogo = hashImgLogo;
         }
     }

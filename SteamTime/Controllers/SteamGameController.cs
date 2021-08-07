@@ -20,20 +20,28 @@ namespace SteamTime.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewBag.Db = true;
+            bool dbData = await _steamGameService.AnyDataAsync();
+            if (!dbData)
+            {
+                ViewBag.Db = false;
+                return View();
+            }
             var list = await _steamGameService.FindAllAsync();
-            var sum = _steamGameService._context.SteamGame.Sum(game => game.PlayTime);
-            ViewData["TotalPlayedTime"] = sum;
-            return View(list.OrderBy(game => game.Name));
+            var sum = TimeSpan.FromMinutes(_steamGameService._context.SteamGame.Sum(game => game.PlayTime));
+            ViewData["TotalPlayedTime"] = Math.Ceiling(sum.TotalHours);
+            return View(list.OrderBy(game => game.Name).OrderByDescending(game => game.PlayedInLastTwoWeeks));
         }
         public async Task<IActionResult> Update()
         {
+            ViewBag.Db = true;
             await _steamApiService.UpdateGamesAsync();
             return View();
         }
         public async Task<IActionResult> Create()
         {
             await _steamApiService.FetchGamesAsync();
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

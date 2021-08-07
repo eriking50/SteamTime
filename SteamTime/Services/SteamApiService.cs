@@ -22,7 +22,7 @@ namespace SteamTime.Services
             int appId;
             string name;
             int playtime_forever;
-            int playtime_2weeks;
+            bool playtime_2weeks;
             string img_logo_url;
             if (_context.SteamGame.Any())
             {
@@ -42,11 +42,11 @@ namespace SteamTime.Services
                     playtime_forever = (int)g["playtime_forever"];
                     if (g["playtime_2weeks"] == null)
                     {
-                        playtime_2weeks = 0;
+                        playtime_2weeks = false;
                     }
                     else
                     {
-                        playtime_2weeks = (int)g["playtime_2weeks"];
+                        playtime_2weeks = true;
                     }
                     if (g["img_logo_url"].ToString() == "")
                     {
@@ -65,20 +65,20 @@ namespace SteamTime.Services
             }
         return false;
         }
-        public async Task<bool> UpdateGamesAsync()
+        public async Task UpdateGamesAsync()
         {
-            int playtime_2weeks;
+            bool playtime_2weeks;
             string img_logo_url;
             JToken data = await apiGameService.FetchDataAsync();
             foreach (var game in data["games"])
             {
                 if (game["playtime_2weeks"] == null)
                         {
-                            playtime_2weeks = 0;
+                            playtime_2weeks = false;
                         }
                         else
                         {
-                            playtime_2weeks = (int)game["playtime_2weeks"];
+                            playtime_2weeks = true;
                         }
                         if (game["img_logo_url"].ToString() == "")
                         {
@@ -89,9 +89,10 @@ namespace SteamTime.Services
                             img_logo_url = (string)game["img_logo_url"];
                         }
                 SteamGame gameObj = new SteamGame(apiGameService.SteamId, (int)game["appid"], game["name"].ToString(), (int)game["playtime_forever"], playtime_2weeks, img_logo_url);
+                System.Console.WriteLine(gameObj);
                 _context.Update(gameObj);
             }
-            return false;
+            await _context.SaveChangesAsync();
         }
     }
 }

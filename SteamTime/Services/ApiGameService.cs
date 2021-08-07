@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using SteamTime.Services.Exceptions;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
@@ -13,25 +14,38 @@ namespace SteamTime.Services
         public string FetchUrl { get; set; }
         public ApiGameService()
         {
-            JObject data = JObject.Parse(File.ReadAllText(PathToSteamAccess));
-            SteamId = data["id"].ToString();
-            FetchUrl = $"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={data["key"].ToString()}&steamid={data["id"].ToString()}include_played_free_games=true&include_appinfo=true&format=json";
+            try
+            {
+                JObject data = JObject.Parse(File.ReadAllText(PathToSteamAccess));
+                SteamId = data["id"].ToString();
+                FetchUrl = $"http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={data["key"].ToString()}&steamid={data["id"].ToString()}include_played_free_games=true&include_appinfo=true&format=json";
+            }
+            catch (ApiException)
+            {
+                throw new ApiException("Error to get the ID and Key data from the local json file.");
+            }
         }
         public async Task<JToken> FetchDataAsync()
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage res = await client.GetAsync(FetchUrl);
-            HttpContent content = res.Content;
-            string data = await content.ReadAsStringAsync();
-            if (data != null)
+            try
             {
-                var dataObj = JObject.Parse(data);
-                return dataObj["response"];
+                HttpClient client = new HttpClient();
+                HttpResponseMessage res = await client.GetAsync(FetchUrl);
+                HttpContent content = res.Content;
+                string data = await content.ReadAsStringAsync();
+                if (data != null)
+                {
+                    var dataObj = JObject.Parse(data);
+                    return dataObj["response"];
+                }
+                else
+                {
+                    throw new ApiException("Error! The data get from SteamApi is null.");
+                }
             }
-            else
+            catch (ApiException)
             {
-                //todo colocar uma exception
-                return new JObject();
+                throw new ApiException("Error to fetch the data from SteamApi.");
             }
         }
     }
